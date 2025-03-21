@@ -57,10 +57,10 @@ def decomposeHangul(syllable: str) -> list:
 def decomposeHangulText(text: str) -> str:
     result = []
     for char in text:
-        if 0xAC00 <= ord(char) <= 0xD7A3:
-            result.extend(decomposeHangul(char))
-        else:
+        if ord(char) < 0xAC00 or ord(char) > 0xD7A3:
             result.append(char)
+            continue
+        result.extend(decomposeHangul(char))
     return ''.join(result)
 
 def composeHangul(jamos: list) -> str:
