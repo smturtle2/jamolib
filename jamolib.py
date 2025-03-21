@@ -110,13 +110,12 @@ def composeHangulText(text: str) -> str:
         if text[i+2] in JM_DICT_JUNG:                           # 받침이 다음 모음과 조합 가능함
             comb += composeHangul(text[i-1:i+1])
             continue
+        skip = 1
         if text[i+2] not in JM_DICT_JONG:                       # 이중종성의 가능성이 없음
             comb += composeHangul(text[i-1:i+2])
-            skip = 1
             continue
         if (text[i+1], text[i+2]) not in JM_DICT_JONG_COMPOSE:  # 이중종성 조합이 불가능함
             comb += composeHangul(text[i-1:i+2])
-            skip = 1
             continue
         if i == len(text) - 3:                                  # c가 마지막에서 세번째 글자임
             comb += composeHangul(text[i-1:i+3])
@@ -124,7 +123,6 @@ def composeHangulText(text: str) -> str:
             continue
         if text[i+3] in JM_DICT_JUNG:                           # 이중종성 조합이 가능한 글자가 다음 모음과 조합 가능함
             comb += composeHangul(text[i-1:i+2])
-            skip = 1
             continue
         comb += composeHangul(text[i-1:i+3])
         skip = 2
