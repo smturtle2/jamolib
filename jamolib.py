@@ -86,31 +86,31 @@ def composeHangulText(text: str) -> str:
         if skip > 0:                                            # skip
             skip -= 1
             continue
-        if c not in JM_DICT_JUNG:                               # c가 모음이 아님
+        if c not in JM_LIST_JUNG:                               # c가 모음이 아님
             comb += c
             continue
         if i == 0:                                              # c가 첫 글자임
             comb += c
             continue
-        if text[i-1] not in JM_DICT_CHO:                        # c가 모음이지만 앞글자가 초성이 아님
+        if text[i-1] not in JM_LIST_CHO:                        # c가 모음이지만 앞글자가 초성이 아님
             comb += c
             continue
         comb = comb[:-1]                                        # 조합가능하므로 comb에 있는 초성을 제거
         if i == len(text) - 1:                                  # c가 마지막 글자임
             comb += composeHangul(text[i-1:i+1])
             continue
-        if text[i+1] not in JM_DICT_JONG:                       # 받침이 없음
+        if text[i+1] not in JM_LIST_JONG:                       # 받침이 없음
             comb += composeHangul(text[i-1:i+1])
             continue
         if i == len(text) - 2:                                  # c가 마지막에서 두번째 글자임
             comb += composeHangul(text[i-1:i+2])
             skip = 1
             continue
-        if text[i+2] in JM_DICT_JUNG:                           # 받침이 다음 모음과 조합 가능함
+        if text[i+2] in JM_LIST_JUNG:                           # 받침이 다음 모음과 조합 가능함
             comb += composeHangul(text[i-1:i+1])
             continue
         skip = 1
-        if text[i+2] not in JM_DICT_JONG:                       # 이중종성의 가능성이 없음
+        if text[i+2] not in JM_LIST_JONG:                       # 이중종성의 가능성이 없음
             comb += composeHangul(text[i-1:i+2])
             continue
         if text[i+1:i+3] not in JM_DICT_JONG_COMPOSE:           # 이중종성 조합이 불가능함
@@ -120,7 +120,7 @@ def composeHangulText(text: str) -> str:
             comb += composeHangul(text[i-1:i+3])
             skip = 2
             continue
-        if text[i+3] in JM_DICT_JUNG:                           # 이중종성 조합이 가능한 글자가 다음 모음과 조합 가능함
+        if text[i+3] in JM_LIST_JUNG:                           # 이중종성 조합이 가능한 글자가 다음 모음과 조합 가능함
             comb += composeHangul(text[i-1:i+2])
             continue
         comb += composeHangul(text[i-1:i+3])
@@ -128,9 +128,9 @@ def composeHangulText(text: str) -> str:
     
     # comb에 남아있는 조합가능한 종성을 조합
     for i in range(len(comb)-2, -1, -1):
-        if comb[i] not in JM_DICT_JONG:
+        if comb[i] not in JM_LIST_JONG:
             continue
-        if comb[i+1] not in JM_DICT_JONG:
+        if comb[i+1] not in JM_LIST_JONG:
             continue
         if comb[i:i+2] not in JM_DICT_JONG_COMPOSE:
             continue
