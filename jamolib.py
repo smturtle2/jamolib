@@ -1,6 +1,5 @@
 ﻿'''
 JamoLib : 한글 조합 및 분해 관련 함수들을 제공하는 라이브러리
-    - getJamoSet() -> set : 한글 자모 집합을 반환    
     - decomposeHangul(syllable: str) -> tuple : 한글 음절을 자모 단위로 분해
     - decomposeHangulText(text: str) -> str : 전체 텍스트에 대해 자모 분해를 수행
     - composeHangul(jamos: list) -> str : 자모를 합쳐서 한글 음절로 조합
@@ -37,10 +36,6 @@ JM_ENG_KOR = {
     'P': 'ㅖ', 'h': 'ㅗ', 'hk': 'ㅘ', 'ho': 'ㅙ', 'hl': 'ㅚ', 'y': 'ㅛ', 'n': 'ㅜ',
     'nj': 'ㅝ', 'np': 'ㅞ', 'nl': 'ㅟ', 'b': 'ㅠ', 'm': 'ㅡ', 'ml': 'ㅢ', 'l': 'ㅣ',
 }
-
-def getJamoSet() -> set:
-    jamoSet = set(JM_LIST_CHO + JM_LIST_JUNG + JM_LIST_JONG)
-    return jamoSet
 
 def decomposeHangul(syllable: str) -> str:
     code = ord(syllable) - JM_BASE
