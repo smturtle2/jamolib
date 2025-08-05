@@ -37,6 +37,9 @@ JM_ENG_KOR = {
     'nj': 'ㅝ', 'np': 'ㅞ', 'nl': 'ㅟ', 'b': 'ㅠ', 'm': 'ㅡ', 'ml': 'ㅢ', 'l': 'ㅣ',
 }
 
+def getCharset() -> list:
+    return list(JM_ENG_KOR.values())
+
 def decomposeHangul(syllable: str) -> str:
     code = ord(syllable) - JM_BASE
     cho = code // JM_CHO
