@@ -1,0 +1,50 @@
+<svg width="1280" height="640" viewBox="0 0 1280 640" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">JamoLib hero image</title>
+  <desc id="desc">A project banner showing Hangul decomposition, composition, and keyboard conversion examples.</desc>
+  <defs>
+    <linearGradient id="bg" x1="72" y1="64" x2="1190" y2="592" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF6D8"/>
+      <stop offset="0.48" stop-color="#F9E3C4"/>
+      <stop offset="1" stop-color="#F6C9AA"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="250" y1="148" x2="1036" y2="528" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1B2A41"/>
+      <stop offset="1" stop-color="#243B55"/>
+    </linearGradient>
+    <filter id="shadow" x="188" y="110" width="916" height="454" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dy="10"/>
+      <feGaussianBlur stdDeviation="22"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.094 0 0 0 0 0.122 0 0 0 0 0.188 0 0 0 0.25 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1_2"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1_2" result="shape"/>
+    </filter>
+  </defs>
+  <rect width="1280" height="640" rx="28" fill="url(#bg)"/>
+  <circle cx="1068" cy="116" r="128" fill="#FFFFFF" fill-opacity="0.45"/>
+  <circle cx="118" cy="552" r="166" fill="#FFD9B7" fill-opacity="0.6"/>
+  <path d="M100 164C220 100 356 80 526 112C722 150 866 250 1142 212" stroke="#EBAF84" stroke-width="22" stroke-linecap="round" stroke-opacity="0.55"/>
+  <g filter="url(#shadow)">
+    <rect x="232" y="138" width="816" height="366" rx="28" fill="url(#panel)"/>
+  </g>
+  <rect x="232" y="138" width="816" height="58" rx="28" fill="#152033"/>
+  <circle cx="276" cy="167" r="8" fill="#FF6F61"/>
+  <circle cx="304" cy="167" r="8" fill="#FFCA57"/>
+  <circle cx="332" cy="167" r="8" fill="#57CC99"/>
+  <text x="96" y="146" fill="#9C4F2A" font-family="Verdana, DejaVu Sans, sans-serif" font-size="20" font-weight="700">JamoLib</text>
+  <text x="96" y="188" fill="#6B351B" font-family="Verdana, DejaVu Sans, sans-serif" font-size="52" font-weight="700">Fast Hangul text utilities for Python</text>
+  <text x="96" y="228" fill="#8A4C28" font-family="Verdana, DejaVu Sans, sans-serif" font-size="24">Decompose, compose, and fix Korean keyboard input with a small focused API.</text>
+  <text x="276" y="248" fill="#A9C1E8" font-family="Courier New, monospace" font-size="22">decomposeHangulText("한글")</text>
+  <text x="276" y="292" fill="#FFFFFF" font-family="Courier New, monospace" font-size="38" font-weight="700">ㅎㅏㄴㄱㅡㄹ</text>
+  <text x="276" y="342" fill="#A9C1E8" font-family="Courier New, monospace" font-size="22">composeHangulText("ㄱㅏㅂㅅㅇㅣ")</text>
+  <text x="276" y="386" fill="#FAD7A0" font-family="Courier New, monospace" font-size="38" font-weight="700">값이</text>
+  <text x="276" y="436" fill="#A9C1E8" font-family="Courier New, monospace" font-size="22">translateEngToKor("dkssudgktpdy")</text>
+  <text x="276" y="480" fill="#7DE2D1" font-family="Courier New, monospace" font-size="38" font-weight="700">안녕하세요</text>
+  <rect x="872" y="252" width="134" height="58" rx="18" fill="#FAD7A0"/>
+  <text x="895" y="289" fill="#1B2A41" font-family="Verdana, DejaVu Sans, sans-serif" font-size="24" font-weight="700">Linear</text>
+  <rect x="872" y="332" width="134" height="58" rx="18" fill="#7DE2D1"/>
+  <text x="897" y="369" fill="#1B2A41" font-family="Verdana, DejaVu Sans, sans-serif" font-size="24" font-weight="700">Mixed</text>
+  <rect x="872" y="412" width="134" height="58" rx="18" fill="#A9C1E8"/>
+  <text x="900" y="449" fill="#1B2A41" font-family="Verdana, DejaVu Sans, sans-serif" font-size="24" font-weight="700">Batchim</text>
+</svg>

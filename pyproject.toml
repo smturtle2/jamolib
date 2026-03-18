@@ -8,9 +8,10 @@ dynamic = ["version"]
 description = "Utilities for decomposing, composing, and keyboard-mapping Korean Hangul text."
 readme = { file = "readme.md", content-type = "text/markdown" }
 requires-python = ">=3.9"
+authors = [{ name = "dongju", email = "smturtle2@kakao.com" }]
 keywords = ["hangul", "jamo", "korean", "text-processing"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "Natural Language :: Korean",
     "Programming Language :: Python :: 3",
@@ -30,6 +31,9 @@ test = ["pytest>=8.0"]
 Homepage = "https://github.com/smturtle2/jamolib"
 Repository = "https://github.com/smturtle2/jamolib"
 Issues = "https://github.com/smturtle2/jamolib/issues"
+Documentation = "https://github.com/smturtle2/jamolib#readme"
+Changelog = "https://github.com/smturtle2/jamolib/blob/master/CHANGELOG.md"
+CI = "https://github.com/smturtle2/jamolib/actions/workflows/ci.yml"
 
 [tool.setuptools]
 include-package-data = false

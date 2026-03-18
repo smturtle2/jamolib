@@ -1,0 +1,5 @@
+include readme.md
+include CHANGELOG.md
+include CONTRIBUTING.md
+recursive-include docs/assets *.svg
+recursive-include examples *.py

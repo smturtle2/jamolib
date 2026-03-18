@@ -2,4 +2,5 @@ __pycache__/
 .pytest_cache/
 build/
 dist/
+release-dist/
 *.egg-info/

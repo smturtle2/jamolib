@@ -1,17 +1,11 @@
-"""
-JamoLib: 한글 조합 및 분해 관련 함수들을 제공하는 라이브러리
-    - decomposeHangul(syllable: str) -> str : 한글 음절을 자모 단위로 분해
-    - decomposeHangulText(text: str) -> str : 전체 텍스트에 대해 자모 분해를 수행
-    - composeHangul(jamos: str) -> str : 자모를 합쳐서 한글 음절로 조합
-    - composeHangulText(text: str) -> str : 전체 텍스트에 대해 자모 조합을 수행
-    - translateEngToKor(text: str) -> str : 영타를 한글로 변환
-"""
+"""Utilities for decomposing, composing, and keyboard-mapping Hangul text."""
 
 JM_BASE = 0xAC00
+JM_LAST = 0xD7A3
 JM_CHO = 588
 JM_JUNG = 28
 
-JM_LIST_CHO = [
+JM_LIST_CHO = (
     "ㄱ",
     "ㄲ",
     "ㄴ",
@@ -31,8 +25,8 @@ JM_LIST_CHO = [
     "ㅌ",
     "ㅍ",
     "ㅎ",
-]
-JM_LIST_JUNG = [
+)
+JM_LIST_JUNG = (
     "ㅏ",
     "ㅐ",
     "ㅑ",
@@ -54,8 +48,8 @@ JM_LIST_JUNG = [
     "ㅡ",
     "ㅢ",
     "ㅣ",
-]
-JM_LIST_JONG = [
+)
+JM_LIST_JONG = (
     "",
     "ㄱ",
     "ㄲ",
@@ -84,11 +78,14 @@ JM_LIST_JONG = [
     "ㅌ",
     "ㅍ",
     "ㅎ",
-]
+)
 
-JM_DICT_CHO = dict(zip(JM_LIST_CHO, range(0, len(JM_LIST_CHO))))
-JM_DICT_JUNG = dict(zip(JM_LIST_JUNG, range(0, len(JM_LIST_JUNG))))
-JM_DICT_JONG = dict(zip(JM_LIST_JONG, range(0, len(JM_LIST_JONG))))
+JM_DICT_CHO = dict(zip(JM_LIST_CHO, range(len(JM_LIST_CHO))))
+JM_DICT_JUNG = dict(zip(JM_LIST_JUNG, range(len(JM_LIST_JUNG))))
+JM_DICT_JONG = dict(zip(JM_LIST_JONG, range(len(JM_LIST_JONG))))
+JM_SET_CHO = frozenset(JM_LIST_CHO)
+JM_SET_JUNG = frozenset(JM_LIST_JUNG)
+JM_SET_JONG = frozenset(JM_LIST_JONG[1:])
 
 JM_DICT_JONG_DECOMPOSE = {
     "ㄳ": "ㄱㅅ",
@@ -115,6 +112,15 @@ JM_DICT_JONG_COMPOSE = {
     "ㄹㅍ": "ㄿ",
     "ㄹㅎ": "ㅀ",
     "ㅂㅅ": "ㅄ",
+}
+JM_DICT_JUNG_COMPOSE = {
+    "ㅗㅏ": "ㅘ",
+    "ㅗㅐ": "ㅙ",
+    "ㅗㅣ": "ㅚ",
+    "ㅜㅓ": "ㅝ",
+    "ㅜㅔ": "ㅞ",
+    "ㅜㅣ": "ㅟ",
+    "ㅡㅣ": "ㅢ",
 }
 
 JM_ENG_KOR = {
@@ -159,135 +165,155 @@ JM_ENG_KOR = {
     "ml": "ㅢ",
     "l": "ㅣ",
 }
+JM_CHARSET = tuple(JM_ENG_KOR.values())
 
 
 def getCharset() -> list[str]:
-    return list(JM_ENG_KOR.values())
+    return list(JM_CHARSET)
+
+
+def _is_hangul_syllable(char: str) -> bool:
+    return len(char) == 1 and JM_BASE <= ord(char) <= JM_LAST
+
+
+def _decompose_hangul_syllable(syllable: str) -> str:
+    code = ord(syllable) - JM_BASE
+    cho = code // JM_CHO
+    jung = (code % JM_CHO) // JM_JUNG
+    jong = code % JM_JUNG
+
+    result = [JM_LIST_CHO[cho], JM_LIST_JUNG[jung]]
+    jong_char = JM_LIST_JONG[jong]
+    result.append(JM_DICT_JONG_DECOMPOSE.get(jong_char, jong_char))
+    return "".join(result)
 
 
 def decomposeHangul(syllable: str) -> str:
-    code = ord(syllable) - JM_BASE
-    cho = code // JM_CHO
-    jung = (code - JM_CHO * cho) // JM_JUNG
-    jong = code - JM_CHO * cho - JM_JUNG * jung
-
-    result = ""
-    result += JM_LIST_CHO[cho]
-    result += JM_LIST_JUNG[jung]
-    jong_char = JM_LIST_JONG[jong]
-    if jong_char in JM_DICT_JONG_DECOMPOSE:
-        result += JM_DICT_JONG_DECOMPOSE[jong_char]
-    else:
-        result += jong_char
-
-    return result
+    if not _is_hangul_syllable(syllable):
+        raise ValueError("syllable must be a single Hangul syllable in the range '가' to '힣'.")
+    return _decompose_hangul_syllable(syllable)
 
 
 def decomposeHangulText(text: str) -> str:
-    result = text
+    result: list[str] = []
+    append = result.append
+    jong_decompose = JM_DICT_JONG_DECOMPOSE.get
+
     for char in text:
-        if ord(char) < 0xAC00 or ord(char) > 0xD7A3:
+        code = ord(char)
+        if JM_BASE <= code <= JM_LAST:
+            offset = code - JM_BASE
+            cho = offset // JM_CHO
+            jung = (offset % JM_CHO) // JM_JUNG
+            jong = offset % JM_JUNG
+            append(JM_LIST_CHO[cho])
+            append(JM_LIST_JUNG[jung])
+            jong_char = JM_LIST_JONG[jong]
+            append(jong_decompose(jong_char, jong_char))
             continue
-        result = result.replace(char, decomposeHangul(char))
-    return result
+
+        append(char)
+
+    return "".join(result)
 
 
 def composeHangul(jamos: str) -> str:
-    cho = JM_DICT_CHO[jamos[0]]
-    jung = JM_DICT_JUNG[jamos[1]]
+    if len(jamos) not in (2, 3, 4):
+        raise ValueError("jamos must contain 2 to 4 compatibility jamo characters.")
 
-    code = JM_BASE + JM_CHO * cho + JM_JUNG * jung
-    if len(jamos) == 2:
-        return chr(code)
+    try:
+        cho = JM_DICT_CHO[jamos[0]]
+        jung = JM_DICT_JUNG[jamos[1]]
+    except KeyError as exc:
+        raise ValueError(
+            "jamos must start with a valid choseong followed by a valid jungseong."
+        ) from exc
 
+    jong = 0
     if len(jamos) == 3:
-        jong = JM_DICT_JONG[jamos[2]]
-    else:
-        jong = JM_DICT_JONG[JM_DICT_JONG_COMPOSE[jamos[2:4]]]
+        try:
+            jong = JM_DICT_JONG[jamos[2]]
+        except KeyError as exc:
+            raise ValueError("the final jamo must be a valid jongseong.") from exc
+    elif len(jamos) == 4:
+        try:
+            jong = JM_DICT_JONG[JM_DICT_JONG_COMPOSE[jamos[2:4]]]
+        except KeyError as exc:
+            raise ValueError(
+                "the last two jamo characters must form a valid double jongseong."
+            ) from exc
 
-    code = JM_BASE + JM_CHO * cho + JM_JUNG * jung + jong
-    return chr(code)
+    return chr(JM_BASE + JM_CHO * cho + JM_JUNG * jung + jong)
 
 
 def composeHangulText(text: str) -> str:
-    comb = ""
-    skip = 0
-    for i, char in enumerate(text):
-        if skip > 0:
-            skip -= 1
-            continue
-        if char not in JM_LIST_JUNG:
-            comb += char
-            continue
-        if i == 0:
-            comb += char
-            continue
-        if text[i - 1] not in JM_LIST_CHO:
-            comb += char
-            continue
-        comb = comb[:-1]
-        if i == len(text) - 1:
-            comb += composeHangul(text[i - 1 : i + 1])
-            continue
-        if text[i + 1] not in JM_LIST_JONG:
-            comb += composeHangul(text[i - 1 : i + 1])
-            continue
-        if i == len(text) - 2:
-            comb += composeHangul(text[i - 1 : i + 2])
-            skip = 1
-            continue
-        if text[i + 2] in JM_LIST_JUNG:
-            comb += composeHangul(text[i - 1 : i + 1])
-            continue
-        skip = 1
-        if text[i + 2] not in JM_LIST_JONG:
-            comb += composeHangul(text[i - 1 : i + 2])
-            continue
-        if text[i + 1 : i + 3] not in JM_DICT_JONG_COMPOSE:
-            comb += composeHangul(text[i - 1 : i + 2])
-            continue
-        if i == len(text) - 3:
-            comb += composeHangul(text[i - 1 : i + 3])
-            skip = 2
-            continue
-        if text[i + 3] in JM_LIST_JUNG:
-            comb += composeHangul(text[i - 1 : i + 2])
-            continue
-        comb += composeHangul(text[i - 1 : i + 3])
-        skip = 2
+    result: list[str] = []
+    append = result.append
+    set_cho = JM_SET_CHO
+    set_jung = JM_SET_JUNG
+    set_jong = JM_SET_JONG
+    jong_compose = JM_DICT_JONG_COMPOSE
+    jung_compose = JM_DICT_JUNG_COMPOSE
+    i = 0
+    text_len = len(text)
 
-    for i in range(len(comb) - 2, -1, -1):
-        if comb[i] not in JM_LIST_JONG:
+    while i < text_len:
+        char = text[i]
+        if char not in set_cho or i + 1 >= text_len or text[i + 1] not in set_jung:
+            append(char)
+            i += 1
             continue
-        if comb[i + 1] not in JM_LIST_JONG:
-            continue
-        if comb[i : i + 2] not in JM_DICT_JONG_COMPOSE:
-            continue
-        comb = comb[:i] + JM_DICT_JONG_COMPOSE[comb[i : i + 2]] + comb[i + 2 :]
 
-    return comb
+        medial = text[i + 1]
+        medial_width = 1
+        if i + 2 < text_len:
+            medial_pair = text[i + 1 : i + 3]
+            if medial_pair in jung_compose:
+                medial = jung_compose[medial_pair]
+                medial_width = 2
+
+        jamos = text[i] + medial
+        advance = 1 + medial_width
+        tail_index = i + advance
+
+        if tail_index < text_len and text[tail_index] in set_jong:
+            next_index = tail_index + 1
+            if next_index >= text_len or text[next_index] not in set_jung:
+                jamos += text[tail_index]
+                advance += 1
+
+                pair_index = tail_index + 1
+                next_after_pair = tail_index + 2
+                if (
+                    pair_index < text_len
+                    and text[tail_index : pair_index + 1] in jong_compose
+                    and (next_after_pair >= text_len or text[next_after_pair] not in set_jung)
+                ):
+                    jamos += text[pair_index]
+                    advance += 1
+
+        append(composeHangul(jamos))
+        i += advance
+
+    return "".join(result)
 
 
 def translateEngToKor(text: str) -> str:
-    prep = ""
-    skip = 0
-    for i, char in enumerate(text):
-        if skip > 0:
-            skip -= 1
-            continue
-        if char not in JM_ENG_KOR:
-            prep += char
-            continue
-        if i == len(text) - 1:
-            prep += JM_ENG_KOR[char]
-            continue
-        if text[i + 1] not in JM_ENG_KOR:
-            prep += JM_ENG_KOR[char]
-            continue
-        if text[i : i + 2] not in JM_ENG_KOR:
-            prep += JM_ENG_KOR[char]
-            continue
-        prep += JM_ENG_KOR[text[i : i + 2]]
-        skip = 1
+    prepared: list[str] = []
+    append = prepared.append
+    eng_kor = JM_ENG_KOR
+    i = 0
+    text_len = len(text)
 
-    return composeHangulText(prep)
+    while i < text_len:
+        pair = text[i : i + 2]
+        if len(pair) == 2 and pair in eng_kor:
+            append(eng_kor[pair])
+            i += 2
+            continue
+
+        char = text[i]
+        append(eng_kor.get(char, char))
+        i += 1
+
+    return composeHangulText("".join(prepared))
