@@ -169,6 +169,8 @@ JM_CHARSET = tuple(JM_ENG_KOR.values())
 
 
 def getCharset() -> list[str]:
+    """Return the compatibility jamo characters used by the keyboard mapping."""
+
     return list(JM_CHARSET)
 
 
@@ -189,12 +191,16 @@ def _decompose_hangul_syllable(syllable: str) -> str:
 
 
 def decomposeHangul(syllable: str) -> str:
+    """Decompose a single Hangul syllable into compatibility jamo."""
+
     if not _is_hangul_syllable(syllable):
         raise ValueError("syllable must be a single Hangul syllable in the range '가' to '힣'.")
     return _decompose_hangul_syllable(syllable)
 
 
 def decomposeHangulText(text: str) -> str:
+    """Decompose every Hangul syllable in text while preserving non-Hangul characters."""
+
     result: list[str] = []
     append = result.append
     jong_decompose = JM_DICT_JONG_DECOMPOSE.get
@@ -218,6 +224,8 @@ def decomposeHangulText(text: str) -> str:
 
 
 def composeHangul(jamos: str) -> str:
+    """Compose one Hangul syllable from compatibility jamo."""
+
     if len(jamos) not in (2, 3, 4):
         raise ValueError("jamos must contain 2 to 4 compatibility jamo characters.")
 
@@ -247,6 +255,8 @@ def composeHangul(jamos: str) -> str:
 
 
 def composeHangulText(text: str) -> str:
+    """Compose Hangul syllables from compatibility jamo text in a single pass."""
+
     result: list[str] = []
     append = result.append
     set_cho = JM_SET_CHO
@@ -299,6 +309,8 @@ def composeHangulText(text: str) -> str:
 
 
 def translateEngToKor(text: str) -> str:
+    """Convert two-set Korean keyboard input written with English keys into Hangul."""
+
     prepared: list[str] = []
     append = prepared.append
     eng_kor = JM_ENG_KOR

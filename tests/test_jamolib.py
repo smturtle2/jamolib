@@ -8,6 +8,11 @@ def test_public_api_exposes_expected_symbols() -> None:
     assert jamolib.getCharset()
 
 
+def test_public_api_has_docstrings() -> None:
+    for name in jamolib.__all__:
+        assert getattr(jamolib, name).__doc__
+
+
 def test_decompose_and_compose_roundtrip() -> None:
     assert jamolib.decomposeHangul("한") == "ㅎㅏㄴ"
     assert jamolib.decomposeHangulText("한글") == "ㅎㅏㄴㄱㅡㄹ"

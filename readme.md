@@ -6,7 +6,7 @@
 [![GitHub release](https://img.shields.io/github/v/release/smturtle2/jamolib?sort=semver)](https://github.com/smturtle2/jamolib/releases)
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/smturtle2/jamolib/master/docs/assets/jamolib-hero.svg" alt="JamoLib hero image" width="100%">
+  <img src="https://raw.githubusercontent.com/smturtle2/jamolib/master/docs/assets/jamolib-hero.png" alt="JamoLib hero image" width="100%">
 </p>
 
 Fast Hangul text utilities for Python.
@@ -21,7 +21,7 @@ Fast Hangul text utilities for Python.
 - Supports common compound-medial combinations such as `ㄱㅗㅏ -> 과`.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/smturtle2/jamolib/master/docs/assets/jamolib-preview.svg" alt="JamoLib example preview" width="920">
+  <img src="https://raw.githubusercontent.com/smturtle2/jamolib/master/docs/assets/jamolib-preview.png" alt="JamoLib example preview" width="920">
 </p>
 
 ## Installation

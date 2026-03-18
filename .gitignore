@@ -4,3 +4,4 @@ build/
 dist/
 release-dist/
 *.egg-info/
+/.playwright-cli/

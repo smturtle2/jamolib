@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="data:," />
+    <title>JamoLib Preview Screenshot</title>
+    <style>
+      :root {
+        --paper: #f7eedb;
+        --paper-2: #e7c598;
+        --ink: #1d2330;
+        --muted: #625140;
+        --accent: #c55235;
+        --dark: #162133;
+        --dark-2: #2a3e59;
+        --grid: rgba(82, 61, 45, 0.13);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 960px;
+        height: 560px;
+        margin: 0;
+        overflow: hidden;
+      }
+
+      body {
+        font-family: "Trebuchet MS", Verdana, sans-serif;
+        background:
+          radial-gradient(circle at 86% 15%, rgba(255, 247, 233, 0.75), transparent 16%),
+          linear-gradient(135deg, var(--paper) 0%, #eedac0 48%, var(--paper-2) 100%);
+        color: var(--ink);
+      }
+
+      .frame {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        padding: 58px 64px 54px;
+      }
+
+      .frame::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(var(--grid) 1.2px, transparent 1.2px);
+        background-size: 22px 22px;
+        pointer-events: none;
+      }
+
+      .eyebrow {
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        color: #8a4a28;
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+      }
+
+      .title {
+        position: relative;
+        z-index: 1;
+        margin: 14px 0 10px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 46px;
+        line-height: 1.02;
+        letter-spacing: -0.04em;
+      }
+
+      .sub {
+        position: relative;
+        z-index: 1;
+        width: 710px;
+        margin: 0 0 28px;
+        color: var(--muted);
+        font-size: 21px;
+        line-height: 1.35;
+      }
+
+      .board {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: 1fr 1.1fr 1fr;
+        gap: 24px;
+        align-items: stretch;
+      }
+
+      .panel {
+        position: relative;
+        min-height: 236px;
+        border-radius: 30px;
+        padding: 28px;
+        box-shadow: 0 20px 46px rgba(39, 31, 21, 0.18);
+      }
+
+      .panel.dark {
+        background: linear-gradient(160deg, var(--dark) 0%, var(--dark-2) 100%);
+        color: #fff;
+      }
+
+      .panel.light {
+        background: linear-gradient(160deg, #fff7ec 0%, #f1ddc3 100%);
+        color: var(--ink);
+      }
+
+      .kicker {
+        margin: 0 0 16px;
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+      }
+
+      .dark .kicker {
+        color: #f3d1af;
+      }
+
+      .light .kicker {
+        color: #a15132;
+      }
+
+      .mono {
+        margin: 0;
+        font-family: "Courier New", monospace;
+      }
+
+      .input-main {
+        font-size: 32px;
+        font-weight: 700;
+      }
+
+      .input-sub {
+        margin-top: 8px;
+        color: #9dc1ff;
+        font-size: 24px;
+      }
+
+      .muted {
+        margin-top: 32px;
+        color: #7d95b3;
+        font-size: 16px;
+        line-height: 1.35;
+      }
+
+      .decomp {
+        font-size: 32px;
+        font-weight: 700;
+      }
+
+      .decomp-sub {
+        margin-top: 10px;
+        font-size: 26px;
+      }
+
+      .divider {
+        width: 100%;
+        height: 1px;
+        margin: 20px 0 18px;
+        background: repeating-linear-gradient(
+          90deg,
+          rgba(131, 99, 70, 0.65) 0 10px,
+          transparent 10px 18px
+        );
+      }
+
+      .result-line {
+        margin-bottom: 18px;
+        font-size: 20px;
+        color: #a3c8ff;
+      }
+
+      .result-line strong {
+        display: block;
+        margin-top: 8px;
+        color: #ffe1ab;
+        font-size: 36px;
+      }
+
+      .result-line.secondary {
+        color: #8dd8c8;
+      }
+
+      .result-line.secondary strong {
+        color: #fff;
+      }
+
+      .arrow {
+        position: absolute;
+        top: 108px;
+        width: 22px;
+        height: 22px;
+        border-top: 4px solid var(--accent);
+        border-right: 4px solid var(--accent);
+        transform: rotate(45deg);
+      }
+
+      .arrow.left {
+        left: 266px;
+      }
+
+      .arrow.right {
+        right: 266px;
+      }
+
+      .footer {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        gap: 14px;
+        margin-top: 24px;
+      }
+
+      .pill {
+        border-radius: 999px;
+        padding: 10px 16px;
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .pill.dark {
+        background: var(--dark);
+        color: #f6ebd9;
+      }
+
+      .pill.accent {
+        background: linear-gradient(135deg, var(--accent), #99351c);
+        color: #fff4ec;
+      }
+
+      .pill.light {
+        background: rgba(255, 247, 236, 0.72);
+        color: var(--ink);
+        border: 1px solid rgba(29, 35, 48, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="frame">
+      <p class="eyebrow">JAMOLIB EXAMPLE FLOW</p>
+      <h1 class="title">From noisy input to clean Hangul.</h1>
+      <p class="sub">
+        A compact view of decomposition, round-trip composition, and keyboard correction rendered as an actual screenshot asset.
+      </p>
+
+      <section class="board">
+        <article class="panel dark">
+          <p class="kicker">INPUT</p>
+          <p class="mono input-main">한글과</p>
+          <p class="mono input-sub">English 123</p>
+          <p class="muted">
+            Mixed text stays intact while only Hangul syllables are scanned.
+          </p>
+        </article>
+
+        <article class="panel light">
+          <p class="kicker">PROCESS</p>
+          <p class="mono">decomposeHangulText</p>
+          <p class="mono decomp">ㅎㅏㄴㄱㅡㄹㄱㅘ</p>
+          <p class="mono decomp-sub">English 123</p>
+          <div class="divider"></div>
+          <p class="muted">
+            Single-pass decomposition and batchim-aware recomposition.
+          </p>
+        </article>
+
+        <article class="panel dark">
+          <p class="kicker">OUTPUT</p>
+          <div class="mono result-line">
+            ㄱㅏㅂㅅㅇㅣ -&gt;
+            <strong>값이</strong>
+          </div>
+          <div class="mono result-line secondary">
+            dkssudgktpdy -&gt;
+            <strong>안녕하세요</strong>
+          </div>
+        </article>
+      </section>
+
+      <div class="arrow left"></div>
+      <div class="arrow right"></div>
+
+      <div class="footer">
+        <div class="pill dark">decompose / compose / fix</div>
+        <div class="pill accent">actual PNG screenshots</div>
+        <div class="pill light">performance-first Python lib</div>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,5 +1,6 @@
 include readme.md
 include CHANGELOG.md
 include CONTRIBUTING.md
-recursive-include docs/assets *.svg
+recursive-include docs/assets *.png
+recursive-include docs/assets *.html
 recursive-include examples *.py
