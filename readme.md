@@ -1,41 +1,40 @@
-﻿# 🌟 JamoLib
+# JamoLib
 
-JamoLib는 한글 텍스트를 보다 효율적으로 다루기 위한 라이브러리입니다.  
-한글 텍스트를 자모 단위로 분해·조합하고, 영문 입력을 한글로 변환하는 기능을 제공합니다.
+JamoLib는 한글 텍스트를 자모 단위로 분해하고 다시 조합하거나, 영문 키보드 입력을 한글로 변환할 때 사용할 수 있는 가벼운 파이썬 라이브러리입니다.
 
-## 📋 주요 기능
+## 설치
 
-- 자모 분해: 한글 음절을 초성, 중성, 그리고 선택적인 종성으로 분해합니다.
-- 자모 조합: 분해된 자모들을 다시 한글 음절로 조합합니다.
-- 영문→한글 변환: 영문 타이핑 입력을 한글 입력으로 변환합니다.
+```bash
+pip install jamolib
+```
 
-## 🛠️ 사용 예시
+## 주요 기능
 
-다음은 주요 기능별 예시입니다.
+- `decomposeHangul`: 한글 음절 하나를 자모 단위로 분해합니다.
+- `decomposeHangulText`: 문자열 전체를 자모 문자열로 분해합니다.
+- `composeHangul`: 자모를 한글 음절 하나로 조합합니다.
+- `composeHangulText`: 자모 문자열을 다시 한글 문자열로 조합합니다.
+- `translateEngToKor`: 두벌식 영문 키 입력을 한글 문자열로 변환합니다.
 
-### 1️⃣ 분해 예시 코드
+## 사용 예시
+
 ```python
-print("분해 결과:", jamolib.decomposeHangulText("한글"))
-```
-### 1️⃣ 분해 예시 출력 결과
-```출력 결과
-ㅎㅏㄴㄱㅡㄹ
+import jamolib
+
+print(jamolib.decomposeHangulText("한글"))
+# ㅎㅏㄴㄱㅡㄹ
+
+print(jamolib.composeHangulText("ㅎㅏㄴㄱㅡㄹ"))
+# 한글
+
+print(jamolib.translateEngToKor("dkssudgktpdy"))
+# 안녕하세요
 ```
 
-### 2️⃣ 조합 예시 코드
-```python
-print("조합 결과:", jamolib.composeHangulText("ㅎㅏㄴㄱㅡㄹ"))
-```
-### 2️⃣ 조합 예시 출력 결과
-```출력 결과
-한글
-```
+## 개발
 
-### 3️⃣ 변환 예시 코드
-```python
-print("변환 결과:", jamolib.translateEngToKor("dkssudgktpdy dlrjtdms dPwp!"))
-```
-### 3️⃣ 변환 예시 출력 결과
-```출력 결과
-안녕하세요. 이것은 예제!
+```bash
+python -m pip install -e .[test]
+pytest
+python -m build
 ```

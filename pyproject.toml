@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jamolib"
+dynamic = ["version"]
+description = "Utilities for decomposing, composing, and keyboard-mapping Korean Hangul text."
+readme = { file = "readme.md", content-type = "text/markdown" }
+requires-python = ">=3.9"
+keywords = ["hangul", "jamo", "korean", "text-processing"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Natural Language :: Korean",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Text Processing :: Linguistic",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8.0"]
+
+[project.urls]
+Homepage = "https://github.com/smturtle2/jamolib"
+Repository = "https://github.com/smturtle2/jamolib"
+Issues = "https://github.com/smturtle2/jamolib/issues"
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.dynamic]
+version = { attr = "jamolib.__version__" }
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
