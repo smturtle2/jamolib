@@ -1,3 +1,5 @@
+import random
+
 import pytest
 
 import jamolib
@@ -18,6 +20,22 @@ def test_decompose_and_compose_roundtrip() -> None:
     assert jamolib.decomposeHangulText("한글") == "ㅎㅏㄴㄱㅡㄹ"
     assert jamolib.composeHangul("ㅎㅏㄴ") == "한"
     assert jamolib.composeHangulText("ㅎㅏㄴㄱㅡㄹ") == "한글"
+
+
+def test_all_hangul_syllables_roundtrip() -> None:
+    syllables = "".join(chr(code) for code in range(0xAC00, 0xD7A4))
+    assert jamolib.composeHangulText(jamolib.decomposeHangulText(syllables)) == syllables
+
+
+def test_random_hangul_strings_roundtrip() -> None:
+    random.seed(0)
+
+    for _ in range(100):
+        text = "".join(
+            chr(random.randint(0xAC00, 0xD7A3))
+            for _ in range(random.randint(1, 40))
+        )
+        assert jamolib.composeHangulText(jamolib.decomposeHangulText(text)) == text
 
 
 def test_decompose_text_preserves_repeated_and_mixed_characters() -> None:
