@@ -4,7 +4,7 @@ import jamolib
 
 
 def test_public_api_exposes_expected_symbols() -> None:
-    assert jamolib.__version__ == "0.2.0"
+    assert jamolib.__version__ == "0.2.1"
     assert jamolib.getCharset()
 
 

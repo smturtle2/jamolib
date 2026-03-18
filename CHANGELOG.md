@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.1] - 2026-03-18
+
+- Switched README artwork from generated vector illustrations to terminal-style PNG screenshots.
+- Added public API docstrings for the main exported functions.
+- Removed unused screenshot source files from the repository and package manifest.
+
 ## [0.2.0] - 2026-03-18
 
 - Reworked Hangul text processing to use linear-time scanners instead of repeated global string replacement.
