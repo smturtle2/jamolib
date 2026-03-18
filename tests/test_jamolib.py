@@ -5,6 +5,10 @@ import pytest
 import jamolib
 
 
+HANGUL_BASE = 0xAC00
+HANGUL_LAST = 0xD7A3
+
+
 def test_public_api_exposes_expected_symbols() -> None:
     assert jamolib.__version__ == "0.2.1"
     assert jamolib.getCharset()
@@ -22,7 +26,7 @@ def test_decompose_and_compose_roundtrip() -> None:
     assert jamolib.composeHangulText("ㅎㅏㄴㄱㅡㄹ") == "한글"
 
 
-def test_all_hangul_syllables_roundtrip() -> None:
+def test_full_hangul_block_roundtrip_as_one_string() -> None:
     syllables = "".join(chr(code) for code in range(0xAC00, 0xD7A4))
     assert jamolib.composeHangulText(jamolib.decomposeHangulText(syllables)) == syllables
 
@@ -53,6 +57,56 @@ def test_compose_text_handles_batchim_and_syllable_boundaries() -> None:
     assert jamolib.composeHangulText("ㄱㅗㅏ") == "과"
     assert jamolib.composeHangulText("ㄱㅅ") == "ㄱㅅ"
     assert jamolib.composeHangulText("가ㄹㅎ") == "가ㄹㅎ"
+
+
+def test_complex_hangul_words_roundtrip() -> None:
+    samples = [
+        "값이",
+        "읽어",
+        "닭이",
+        "앉아",
+        "많이",
+        "삶과",
+        "싫어",
+        "넓다",
+        "핥아",
+        "읊조리다",
+        "괜찮아",
+        "의의",
+        "회의",
+        "되어",
+        "과외",
+        "귀여워",
+        "쌓이다",
+        "밟아",
+        "없어",
+        "꽃이",
+        "밖에",
+        "앉히다",
+        "훑어",
+        "닭과 값이 많아",
+        "읽고 앉아 있다.",
+    ]
+
+    for sample in samples:
+        decomposed = jamolib.decomposeHangulText(sample)
+        assert jamolib.composeHangulText(decomposed) == sample
+
+
+def test_all_hangul_syllables_roundtrip() -> None:
+    for code in range(HANGUL_BASE, HANGUL_LAST + 1):
+        syllable = chr(code)
+        decomposed = jamolib.decomposeHangulText(syllable)
+        assert jamolib.composeHangulText(decomposed) == syllable
+
+
+def test_representative_pairs_roundtrip_for_all_second_syllables() -> None:
+    for jong_index in range(28):
+        first = chr(HANGUL_BASE + jong_index)
+        for code in range(HANGUL_BASE, HANGUL_LAST + 1):
+            text = first + chr(code)
+            decomposed = jamolib.decomposeHangulText(text)
+            assert jamolib.composeHangulText(decomposed) == text
 
 
 def test_invalid_inputs_raise_clear_value_errors() -> None:
